@@ -2,7 +2,7 @@
 import Search from "./components/Search.vue";
 </script>
 <template>
-  <nav class="bg-blue-900 flex justify-between p-4">
+  <nav class="bg-blue-900 flex justify-between p-4 sticky">
     <div>Logo</div>
     <Search />
   </nav>
