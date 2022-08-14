@@ -1,18 +1,30 @@
-import { reactive } from "vue";
-const useFetchDetails = (id) => {
-  const dataById = reactive({});
+import { reactive, onMounted, toRefs } from 'vue';
+const useFetchDetails = (props) => {
+  const dataById = reactive({
+    response: [],
+    error: null,
+    fetching: false,
+  });
+  console.log(dataById.fetching, 'before');
   const fetchApi = async () => {
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=9a22b0050e2d46e11611865134b2efac&language=en-US`
+        `https://api.themoviedb.org/3/${props.type}/${props.id}?api_key=9a22b0050e2d46e11611865134b2efac&language=en-US`
       );
       const data = await response.json();
-      Object.assign(dataById, data);
+      console.log(data, 'wadafa');
+      dataById.response = data;
+      //Object.assign(dataById, data);
     } catch (error) {
       console.error(error);
+      dataById.error = error;
+    } finally {
+      dataById.fetching = true;
     }
   };
-  fetchApi();
-  return { dataById };
+  // onMounted(async () => {
+  //   await fetchApi();
+  // });
+  return { ...toRefs(dataById), fetchApi };
 };
 export default useFetchDetails;

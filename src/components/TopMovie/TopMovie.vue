@@ -1,5 +1,5 @@
 <script setup>
-const pathImage = "https://image.tmdb.org/t/p/original";
+const pathImage = 'https://image.tmdb.org/t/p/original';
 defineProps({
   data: Array,
 });
@@ -40,13 +40,13 @@ defineProps({
         <router-link
           v-if="movie.title"
           :to="{ name: 'MovieSingle', params: { id: movie.id } }"
-          class="truncate my-auto"
+          class="truncate my-auto hover:text-red-600"
           >{{ movie.title }}</router-link
         >
         <router-link
           v-else
-          :to="{ name: 'MovieSingle', params: { id: movie.id } }"
-          class="truncate my-auto"
+          :to="{ name: 'TvSerieSingle', params: { id: movie.id } }"
+          class="truncate my-auto hover:text-red-600"
           >{{ movie.name }}</router-link
         >
       </div>

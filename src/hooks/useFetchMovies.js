@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref } from 'vue';
 const useFetchMovies = (parameter) => {
   const movies = ref([]);
   const fetchApi = async () => {

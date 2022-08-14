@@ -6,7 +6,7 @@ const { movies } = useFetchMovies("top_rated");
 const { moviesTv } = useFetchTv("top_rated");
 </script>
 <template>
-  <div class="flex bg-red-700">
+  <div class="flex">
     <top-movie class="flex-1 pr-3 min-w-0" :data="movies.slice(0, 5)">
       <template #header>
         <div class="flex justify-between">

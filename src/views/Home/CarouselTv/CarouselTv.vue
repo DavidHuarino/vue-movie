@@ -1,14 +1,14 @@
 <script setup>
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Pagination } from "swiper";
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, Pagination } from 'swiper';
 
-import { computed, ref } from "vue";
-import useFetchTv from "../../../hooks/useFetchTv";
-const { moviesTv } = useFetchTv("popular");
-const pathImage = "https://image.tmdb.org/t/p/original/";
+import { computed, ref } from 'vue';
+import useFetchTv from '../../../hooks/useFetchTv';
+const { moviesTv } = useFetchTv('popular');
+const pathImage = 'https://image.tmdb.org/t/p/original/';
 const swiper_tv = ref(null);
 const onSwiper = (swiper) => {
   swiper_tv.value = swiper;
@@ -17,7 +17,7 @@ const filterMovies = computed(() => {
   return moviesTv.value.filter((movie) => movie.backdrop_path).slice(0, 12);
 });
 const getReleasedYear = computed(() => {
-  return (date) => date.split("-")[0];
+  return (date) => date.split('-')[0];
 });
 </script>
 <template>
@@ -63,27 +63,30 @@ const getReleasedYear = computed(() => {
       :key="index"
       class="relative cursor-pointer bg-green-500 swiper-tv__swiper-slide"
     >
-      <div
-        class="after:absolute after:left-0 after:top-0 after:w-full after:h-full after:bg-gradient-to-t from-black/100 via-black/0 to-black/0"
-      >
-        <img
-          :src="`${pathImage}${movie.backdrop_path}`"
-          alt=""
-          class="block aspect-video"
-        />
-      </div>
-      <div class="absolute bottom-2 left-3 px-2 py-0.5 rounded-md">
-        <span class="block text-white text-xl font-medium">{{
-          movie.name
-        }}</span>
-        <span class="text-white block font-normal">{{
-          getReleasedYear(movie.first_air_date)
-        }}</span>
-      </div>
-      <div class="absolute bottom-2 right-3">
-        <span class="text-white">5</span>
-      </div>
+      <router-link :to="{ name: 'TvSerieSingle', params: { id: movie.id } }">
+        <div
+          class="after:absolute after:left-0 after:top-0 after:w-full after:h-full after:bg-gradient-to-t from-black/100 via-black/0 to-black/0"
+        >
+          <img
+            :src="`${pathImage}${movie.backdrop_path}`"
+            alt=""
+            class="block aspect-video"
+          />
+        </div>
+        <div class="absolute bottom-2 left-3 px-2 py-0.5 rounded-md">
+          <span class="block text-white text-xl font-medium">{{
+            movie.name
+          }}</span>
+          <span class="text-white block font-normal">{{
+            getReleasedYear(movie.first_air_date)
+          }}</span>
+        </div>
+        <div class="absolute bottom-2 right-3">
+          <span class="text-white">5</span>
+        </div>
+      </router-link>
     </swiper-slide>
+
     <div class="swiper-tv__swiper-pagination"></div>
   </swiper>
 </template>

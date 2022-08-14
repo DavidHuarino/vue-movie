@@ -1,13 +1,19 @@
 <script setup>
-import { computed, ref } from "vue";
-import useFetchDetails from "../../hooks/useFetchDetails";
+import { computed, ref, onMounted } from 'vue';
+import useFetchDetails from '../../hooks/useFetchDetails';
 const props = defineProps({
   movie: Object,
   pathImage: String,
 });
-const { dataById } = useFetchDetails(props.movie.id);
+const { response, error, fetching, fetchApi } = useFetchDetails({
+  id: props.movie.id,
+  type: 'movie',
+});
+onMounted(async () => {
+  await fetchApi();
+});
 const releaseDate = computed(() => {
-  return dataById.release_date?.split("-")[0];
+  return response.value.release_date?.split('-')[0];
 });
 </script>
 <template>
@@ -42,10 +48,10 @@ const releaseDate = computed(() => {
               d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
             />
           </svg>
-          <span>{{ dataById.vote_average }}</span>
+          <span>{{ response.vote_average }}</span>
         </div>
         <div
-          class="absolute inset-0 rounded-md bg-black/50 transition ease-out flex justify-center items-center opacity-0 hover:opacity-100"
+          class="absolute inset-0 rounded-md bg-black/50 transition ease-out flex justify-center items-center opacity-0 hover:opacity-100 duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

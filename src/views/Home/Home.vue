@@ -22,7 +22,7 @@ fetchNewMovies(currentDate);
 console.log(newMovies, "peliculas nuevas");
 </script>
 <template>
-  <div class="px-10">
+  <div class="px-10 bg-home-main text-white">
     <carousel-popular-movies />
     <section>
       <div class="flex justify-between">
