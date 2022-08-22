@@ -1,14 +1,27 @@
 <script setup>
-import "swiper/css";
-import "swiper/css/navigation";
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Autoplay } from "swiper";
-import { ref } from "vue";
-import useFetchMovies from "../../../hooks/useFetchMovies";
-
-const { movies } = useFetchMovies("popular");
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, Autoplay } from 'swiper';
+import { ref, onMounted, reactive } from 'vue';
+//import useFetchMovies from '../../../hooks/useFetchMovies';
+import useFetchMovie from '../../../hooks/useFetchMovie';
+const sendProps = reactive({
+  movieType: 'movie',
+  getType: 'popular',
+});
+const {
+  response: movies,
+  error,
+  fetching,
+  fetchApi,
+} = useFetchMovie(sendProps);
+onMounted(async () => {
+  await fetchApi();
+});
+//const { movies } = useFetchMovies('popular');
 const swiper_popular = ref(null);
-const pathImage = "https://image.tmdb.org/t/p/original/";
+const pathImage = 'https://image.tmdb.org/t/p/original/';
 const onSwiper = (swiper) => {
   swiper_popular.value = swiper;
 };
@@ -79,6 +92,7 @@ const onSwiper = (swiper) => {
     }"
     :modules="[Navigation, Autoplay]"
     class="swiper-popular-movies"
+    v-if="fetching"
   >
     <swiper-slide
       v-for="(movie, index) in movies"

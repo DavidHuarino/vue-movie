@@ -1,41 +1,53 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, reactive, toRefs } from 'vue';
 import useFetchDetails from '../../hooks/useFetchDetails';
 const props = defineProps({
-  movie: Object,
+  movieId: Number,
   pathImage: String,
+  route: String,
+  movieType: String,
 });
-const { response, error, fetching, fetchApi } = useFetchDetails({
-  id: props.movie.id,
-  type: 'movie',
+const { movieId, movieType } = toRefs(props);
+//const _id = computed(() => props.movieId);
+const sendProps = reactive({
+  id: movieId,
+  type: movieType,
 });
+//const _id = computed(() => props.movieId);
+const { response, error, fetching, fetchApi } = useFetchDetails(sendProps);
 onMounted(async () => {
   await fetchApi();
 });
+//fetchApi();
+// onMounted(async () => {
+//   await fetchApi(_id.value);
+// });
 const releaseDate = computed(() => {
   return response.value.release_date?.split('-')[0];
 });
 </script>
 <template>
-  <div class="rounded-t-md">
+  <div class="rounded-t-md" v-if="fetching">
     <router-link
       :to="{
-        name: 'MovieSingle',
-        params: { id: props.movie.id },
+        name: props.route,
+        params: { id: movieId },
       }"
     >
       <div class="relative">
         <img
-          :src="`${pathImage}${movie.poster_path}`"
+          :src="`${pathImage}${response.poster_path}`"
           alt=""
           class="w-full h-full align-top rounded-md"
         />
-        <span
+        <slot name="release-date" :releaseDate="releaseDate"></slot>
+        <!-- <span
           class="absolute bottom-1 left-2 text-white text-sm bg-black/75 px-2 py-0.5 rounded"
         >
           {{ releaseDate }}</span
-        >
-        <div
+        > -->
+        <slot name="vote-average" :voteAverage="response.vote_average"></slot>
+        <!-- <div
           class="absolute bottom-0 right-0 text-white text-sm bg-black/75 px-1 py-0.5 flex items-center justify-between rounded-br-md"
         >
           <svg
@@ -49,7 +61,7 @@ const releaseDate = computed(() => {
             />
           </svg>
           <span>{{ response.vote_average }}</span>
-        </div>
+        </div> -->
         <div
           class="absolute inset-0 rounded-md bg-black/50 transition ease-out flex justify-center items-center opacity-0 hover:opacity-100 duration-300"
         >
@@ -68,16 +80,14 @@ const releaseDate = computed(() => {
         </div>
       </div>
     </router-link>
-    <!-- <span class="text-sm"
-      ><p class="truncate font-normal">{{ movie.title }}</p></span
-    > -->
-    <router-link
+    <slot name="name"></slot>
+    <!-- <router-link
       :to="{
         name: 'MovieSingle',
         params: { id: props.movie.id },
       }"
     >
       <p class="truncate font-normal">{{ movie.title }}</p>
-    </router-link>
+    </router-link> -->
   </div>
 </template>

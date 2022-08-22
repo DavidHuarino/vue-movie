@@ -5,9 +5,23 @@ import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 
-import { computed, ref } from 'vue';
-import useFetchTv from '../../../hooks/useFetchTv';
-const { moviesTv } = useFetchTv('popular');
+import { computed, ref, onMounted, reactive } from 'vue';
+import useFetchMovie from '../../../hooks/useFetchMovie';
+// import useFetchTv from '../../../hooks/useFetchTv';
+// const { moviesTv } = useFetchTv('popular');
+const sendProps = reactive({
+  movieType: 'tv',
+  getType: 'popular',
+});
+const {
+  response: moviesTv,
+  error,
+  fetching,
+  fetchApi,
+} = useFetchMovie(sendProps);
+onMounted(async () => {
+  await fetchApi();
+});
 const pathImage = 'https://image.tmdb.org/t/p/original/';
 const swiper_tv = ref(null);
 const onSwiper = (swiper) => {
@@ -30,6 +44,7 @@ const getReleasedYear = computed(() => {
     </div>
   </div>
   <swiper
+    v-if="fetching"
     @swiper="onSwiper"
     :spaceBetween="10"
     :pagination="{
@@ -96,7 +111,7 @@ const getReleasedYear = computed(() => {
     background-color: green;
     color: black;
   }
-  background-color: gray;
+  // background-color: gray;
   &__swiper-pagination {
     text-align: center;
     margin-top: 1rem;
@@ -105,7 +120,7 @@ const getReleasedYear = computed(() => {
       height: 0.6rem;
       display: inline-block;
       background: #fff;
-      opacity: 0.2;
+      opacity: 0.7;
       border-radius: 20px;
       margin-right: 50px;
       -webkit-transition: opacity 0.5s, background-color 0.5s, width 0.5s;

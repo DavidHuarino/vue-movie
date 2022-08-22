@@ -1,34 +1,35 @@
 <script setup>
-import { useMovieStore } from "../../stores/movieStore";
-import { onMounted, ref } from "vue";
-import { storeToRefs } from "pinia";
-import MovieCard from "../../components/MovieCard/MovieCard.vue";
-import CarouselTv from "./CarouselTv/CarouselTv.vue";
-import CarouselPopularMovies from "./CarouselPopularMovies/CarouselPopularMovies.vue";
-import TopMovieList from "./TopMovieList/TopMovieList.vue";
+import { useMovieStore } from '../../stores/movieStore';
+import { onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import MovieCard from '../../components/MovieCard/MovieCard.vue';
+import CarouselTv from './CarouselTv/CarouselTv.vue';
+import CarouselPopularMovies from './CarouselPopularMovies/CarouselPopularMovies.vue';
+import TopMovieList from './TopMovieList/TopMovieList.vue';
+import NewMoviesList from './newMoviesList/NewMoviesList.vue';
 //import TopVideoList from "./TopVideoList/TopVideoList.vue";
 //import TopVideoList from "../../components/TopVideoList/TopVideoList.vue";
 
 const store = useMovieStore();
 const { popularMovies, newMovies } = storeToRefs(store);
 const { fetchPopularMovies, fetchNewMovies } = store;
-const pathImage = "https://image.tmdb.org/t/p/original/";
+const pathImage = 'https://image.tmdb.org/t/p/original/';
 const currentDate = new Date();
 onMounted(async () => {
   await fetchPopularMovies();
   await fetchNewMovies(currentDate);
 });
 fetchNewMovies(currentDate);
-console.log(newMovies, "peliculas nuevas");
+console.log(newMovies, 'peliculas nuevas');
 </script>
 <template>
   <div class="px-10 bg-home-main text-white">
     <carousel-popular-movies />
-    <section>
+    <new-movies-list />
+    <!-- <section>
       <div class="flex justify-between">
         <h2>Nuevas películas</h2>
         <div class="flex justify-between">
-          <!-- <span><a href="#">Ver todo</a></span> -->
           <router-link :to="{ name: 'Movie' }"> Ver todo </router-link>
         </div>
       </div>
@@ -43,6 +44,8 @@ console.log(newMovies, "peliculas nuevas");
         />
       </div>
     </section>
+    <carousel-tv />
+    <top-movie-list /> -->
     <carousel-tv />
     <top-movie-list />
   </div>
