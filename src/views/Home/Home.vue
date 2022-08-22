@@ -6,7 +6,7 @@ import MovieCard from '../../components/MovieCard/MovieCard.vue';
 import CarouselTv from './CarouselTv/CarouselTv.vue';
 import CarouselPopularMovies from './CarouselPopularMovies/CarouselPopularMovies.vue';
 import TopMovieList from './TopMovieList/TopMovieList.vue';
-import NewMoviesList from './newMoviesList/NewMoviesList.vue';
+import NewMoviesList from './NewMoviesList/NewMoviesList.vue';
 //import TopVideoList from "./TopVideoList/TopVideoList.vue";
 //import TopVideoList from "../../components/TopVideoList/TopVideoList.vue";
 
