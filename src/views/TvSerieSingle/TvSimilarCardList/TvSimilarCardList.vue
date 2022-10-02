@@ -36,8 +36,8 @@ onMounted(async () => {
 //console.log('me he creado de nuevo list card', props.movieId);
 </script>
 <template>
-  <div>
-    <h2>Similar TV Shows</h2>
+  <div class="text-white">
+    <h2 class="pl-3 text-lg font-medium">Similar TV Shows</h2>
     <div class="grid grid-cols-6 gap-2 p-3" v-if="fetching">
       <movie-card
         v-for="(item, index) in response.slice(0, 12)"

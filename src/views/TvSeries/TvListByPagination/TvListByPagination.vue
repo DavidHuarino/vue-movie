@@ -1,51 +1,41 @@
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
+import useFetchMovie from '../../../hooks/useFetchMovie';
 import MovieCard from '../../../components/MovieCard/MovieCard.vue';
-import { useMovieStore } from '../../../stores/movieStore';
-import { storeToRefs } from 'pinia';
+import Pagination from '../../../components/Pagination/Pagination.vue';
 
-const store = useMovieStore();
-const { newMovies } = storeToRefs(store);
-const { fetchNewMovies } = store;
 const pathImage = 'https://image.tmdb.org/t/p/original/';
-const currentDate = new Date();
-onMounted(async () => {
-  await fetchNewMovies(currentDate);
+const currentPage = ref(1);
+const sendProps = reactive({
+  movieType: 'tv',
+  getType: 'popular',
+  page: currentPage,
 });
-// const releaseDate = computed(() => {
-//   return response.value.release_date?.split('-')[0];
+const {
+  response: moviesTv,
+  error,
+  fetching,
+  totalPages,
+  fetchApi,
+} = useFetchMovie(sendProps);
+onMounted(async () => {
+  await fetchApi();
+});
+// watch(currentPage, async (newPage) => {
+//   await fetchApi(currentDate, newPage);
+//   //console.log(newPage, 'nueva pagina');
 // });
 </script>
 <template>
-  <div class="space-y-4">
-    <div class="flex justify-between">
-      <div class="flex space-x-2">
-        <div class="w-1 bg-red-600"></div>
-        <h2 class="text-xl capitalize">New Movies</h2>
-      </div>
-      <!-- <h2>Nuevas películas</h2> -->
-      <div
-        class="flex justify-between bg-red-500 px-2 rounded font-medium text-base"
-      >
-        <router-link :to="{ name: 'Movie' }"> Ver todo </router-link>
-      </div>
-    </div>
-    <div
-      class="grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7"
-    >
-      <!-- <movie-card
-      v-for="(movie, index) in newMovies.slice(0, 14)"
-      :key="index"
-      :movie="movie"
-      :pathImage="pathImage"
-    /> -->
+  <div v-if="fetching" class="flex-3 px-5 space-y-5 mb-6">
+    <div class="grid gap-3 md:grid-cols-4 lg:grid-cols-5">
       <movie-card
-        v-for="(item, index) in newMovies.response.slice(0, 14)"
+        v-for="(item, index) in moviesTv"
         :key="index"
         :movieId="item.id"
         :pathImage="pathImage"
-        route="MovieSingle"
-        movieType="movie"
+        route="TvSerieSingle"
+        movieType="tv"
       >
         <template #release-date="{ releaseDate }">
           <span
@@ -74,16 +64,22 @@ onMounted(async () => {
         <template #name>
           <router-link
             :to="{
-              name: 'MovieSingle',
+              name: 'TvSerieSingle',
               params: { id: item.id },
             }"
           >
             <p class="truncate font-normal hover:text-red-700">
-              {{ item.title }}
+              {{ item.name }}
             </p>
           </router-link>
         </template>
       </movie-card>
     </div>
+    <pagination
+      v-model="currentPage"
+      :total-pages="500"
+      :max-pages="7"
+      class="margin-footer"
+    />
   </div>
 </template>

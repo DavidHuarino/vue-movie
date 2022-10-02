@@ -1,15 +1,23 @@
 <script setup>
+import { computed } from 'vue';
 import GenresList from '../../../components/GenresList/GenresList.vue';
 const pathImage = 'https://image.tmdb.org/t/p/original';
-defineProps({
+const props = defineProps({
   response: Object,
+});
+const imgUrl = new URL('../assets/no_image.jpg', import.meta.url).href;
+const notImage = computed(() => {
+  if (props.response.backdrop_path) {
+    return `url('${pathImage}${props.response.backdrop_path}')`;
+  }
+  return '';
 });
 </script>
 <template>
   <section
     class="h-96 bg-cover bg-top"
     :style="{
-      backgroundImage: `url('${pathImage}${response.backdrop_path}')`,
+      backgroundImage: notImage,
     }"
   >
     <div
@@ -17,16 +25,18 @@ defineProps({
     >
       <div class="flex-none w-48 z-10">
         <img
+          v-if="response.poster_path"
           :src="`${pathImage}${response.poster_path}`"
           :alt="`${response.title}`"
           class="w-full"
         />
+        <img v-else :src="imgUrl" :alt="`${response.title}`" class="w-full" />
       </div>
       <div class="flex-1 z-10 space-y-3">
         <h2 class="text-white text-3xl font-bold mb-5">
           {{ response.title }}
         </h2>
-        <GenresList :genres="response.genres" />
+        <!-- <GenresList :genres="response.genres" /> -->
         <p class="text-white">{{ response.overview }}</p>
         <div class="text-white space-x-4 flex items-center">
           <span class="text-gray-400 text-sm">{{ response.release_date }}</span>

@@ -1,46 +1,44 @@
 <script setup>
-import { onMounted, computed } from 'vue';
 import MovieCard from '../../../components/MovieCard/MovieCard.vue';
+//import useFetchMovie from '../../../hooks/useFetchMovie';
 import { useMovieStore } from '../../../stores/movieStore';
+import Pagination from '../../../components/Pagination/Pagination.vue';
 import { storeToRefs } from 'pinia';
-
+import { onMounted, ref, watch } from 'vue';
 const store = useMovieStore();
 const { newMovies } = storeToRefs(store);
 const { fetchNewMovies } = store;
 const pathImage = 'https://image.tmdb.org/t/p/original/';
 const currentDate = new Date();
+const currentPage = ref(1);
+//const total = ref(null);
 onMounted(async () => {
-  await fetchNewMovies(currentDate);
+  await fetchNewMovies(currentDate, currentPage);
 });
-// const releaseDate = computed(() => {
-//   return response.value.release_date?.split('-')[0];
+// const newMovies = ref(null);
+// onMounted(async () => {
+//   const response = await fetch(
+//     `https://api.themoviedb.org/3/movie/now_playing?api_key=9a22b0050e2d46e11611865134b2efac&language=en-US&page=${currentPage}`
+//   );
+//   const result = await response.json();
+//   total.value = result.total_pages;
+//   newMovies.value = result.results;
 // });
+// const fetchMovie = async () => {
+//   const response = await fetch(
+//     `https://api.themoviedb.org/3/discover/movie?api_key=9a22b0050e2d46e11611865134b2efac&include_video=false&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&page=${page}`
+//   );
+// };
+watch(currentPage, async (newPage) => {
+  await fetchNewMovies(currentDate, newPage);
+  //console.log(newPage, 'nueva pagina');
+});
 </script>
 <template>
-  <div class="space-y-4">
-    <div class="flex justify-between">
-      <div class="flex space-x-2">
-        <div class="w-1 bg-red-600"></div>
-        <h2 class="text-xl capitalize">New Movies</h2>
-      </div>
-      <!-- <h2>Nuevas películas</h2> -->
-      <div
-        class="flex justify-between bg-red-500 px-2 rounded font-medium text-base"
-      >
-        <router-link :to="{ name: 'Movie' }"> Ver todo </router-link>
-      </div>
-    </div>
-    <div
-      class="grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7"
-    >
-      <!-- <movie-card
-      v-for="(movie, index) in newMovies.slice(0, 14)"
-      :key="index"
-      :movie="movie"
-      :pathImage="pathImage"
-    /> -->
+  <div v-if="newMovies.fetching" class="flex-3 px-5 space-y-5 mb-6">
+    <div class="grid gap-3 md:grid-cols-4 lg:grid-cols-5">
       <movie-card
-        v-for="(item, index) in newMovies.response.slice(0, 14)"
+        v-for="(item, index) in newMovies.response"
         :key="index"
         :movieId="item.id"
         :pathImage="pathImage"
@@ -85,5 +83,17 @@ onMounted(async () => {
         </template>
       </movie-card>
     </div>
+    <pagination
+      v-model="currentPage"
+      :total-pages="newMovies.totalPages"
+      :max-pages="7"
+      class="margin-footer"
+    />
+    <!-- <p>{{ currentPage }}</p> -->
   </div>
 </template>
+<style lang="scss">
+.margin-footer {
+  margin-bottom: 5px;
+}
+</style>

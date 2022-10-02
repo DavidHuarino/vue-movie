@@ -4,11 +4,13 @@ import Home from '../views/Home/Home.vue';
 import Movies from '../views/Movies/Movies.vue';
 import MovieSingle from '../views/MovieSingle/MovieSingle.vue';
 import TvSerieSingle from '../views/TvSerieSingle/TvSerieSingle.vue';
+import TvSeries from '../views/TvSeries/TvSeries.vue';
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/movie', name: 'Movie', component: Movies },
   { path: '/movie/:id', name: 'MovieSingle', component: MovieSingle },
+  { path: '/movie', name: 'Movie', component: Movies },
   { path: '/serie/:id', name: 'TvSerieSingle', component: TvSerieSingle },
+  { path: '/tv', name: 'TvSerie', component: TvSeries },
 ];
 const router = createRouter({
   history: createWebHistory(),

@@ -25,6 +25,7 @@ onMounted(async () => {
 const releaseDate = computed(() => {
   return response.value.release_date?.split('-')[0];
 });
+const imgUrl = new URL('./assets/no_image.jpg', import.meta.url).href;
 </script>
 <template>
   <div class="rounded-t-md" v-if="fetching">
@@ -36,10 +37,16 @@ const releaseDate = computed(() => {
     >
       <div class="relative">
         <img
+          v-if="response.poster_path"
           :src="`${pathImage}${response.poster_path}`"
-          alt=""
           class="w-full h-full align-top rounded-md"
         />
+        <img
+          v-else
+          :src="imgUrl"
+          class="w-full h-full align-top rounded-md bg-contain"
+        />
+        <!-- <div v-else class="w-full h-full align-top rounded-md">No image</div> -->
         <slot name="release-date" :releaseDate="releaseDate"></slot>
         <!-- <span
           class="absolute bottom-1 left-2 text-white text-sm bg-black/75 px-2 py-0.5 rounded"

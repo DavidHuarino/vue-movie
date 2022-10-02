@@ -13,6 +13,7 @@ const useFetchMovie = (props) => {
     response: [],
     error: null,
     fetching: false,
+    totalPages: 500,
   });
   // const loadUserData = async () => {
   //   return new Promise((resolve) => {
@@ -46,6 +47,10 @@ const useFetchMovie = (props) => {
       );
       const data = await response.json();
       movieData.response = data.results;
+      //console.log(data, 'veamos');
+      if (!movieData.totalPages && data.totalPages <= 500) {
+        movieData.totalPages = data.total_pages;
+      }
     } catch (error) {
       movieData.error = error;
     } finally {

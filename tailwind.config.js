@@ -19,6 +19,9 @@ module.exports = {
       green: colors.green,
     },
     extend: {
+      height: {
+        65: '17rem',
+      },
       backdropBlur: {
         xs: '1.2px',
       },

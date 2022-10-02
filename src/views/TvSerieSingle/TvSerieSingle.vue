@@ -50,11 +50,13 @@ watch(
 </script>
 <template>
   <!-- {{ route.params.id }} -->
-  <tv-header :response="response" v-if="fetching" />
-  <div class="flex justify-between">
-    <tv-similar-card-list class="flex-3" :movieId="showId" />
-    <tv-recommendation-card-list class="flex-1" :movieId="showId" />
-    <!-- <tv-similar-card-list class="flex-3" :movieId="route.params.id" />
+  <div class="bg-home-main space-y-5">
+    <tv-header :response="response" v-if="fetching" />
+    <div class="flex justify-between">
+      <tv-similar-card-list class="flex-3" :movieId="showId" />
+      <tv-recommendation-card-list class="flex-1" :movieId="showId" />
+      <!-- <tv-similar-card-list class="flex-3" :movieId="route.params.id" />
     <tv-recommendation-card-list class="flex-1" :movieId="route.params.id" /> -->
+    </div>
   </div>
 </template>

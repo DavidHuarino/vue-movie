@@ -23,8 +23,8 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <div>
-    <h2>Recommendation Tv Shows</h2>
+  <div class="text-white text-center">
+    <h2 class="text-lg font-medium">Recommendation Tv Shows</h2>
     <div class="grid grid-cols-3 gap-2 p-3" v-if="fetching">
       <movie-card
         v-for="(item, index) in response.slice(0, 9)"

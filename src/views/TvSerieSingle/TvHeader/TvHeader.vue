@@ -1,5 +1,5 @@
 <script setup>
-import GenresList from '../../../components/GenresList/GenresList.vue';
+// import GenresList from '../../../components/GenresList/GenresList.vue';
 const pathImage = 'https://image.tmdb.org/t/p/original';
 defineProps({
   response: Object,
@@ -19,7 +19,7 @@ defineProps({
         <h2 class="text-white text-3xl font-bold mb-5">
           {{ response.name }}
         </h2>
-        <genres-list :genres="response.genres" />
+        <!-- <genres-list :genres="response.genres" /> -->
         <p class="text-white">{{ response.overview }}</p>
         <div class="flex space-x-2 items-center">
           <div class="text-gray-200 bg-black/60 px-2 py-1 text-sm rounded-sm">

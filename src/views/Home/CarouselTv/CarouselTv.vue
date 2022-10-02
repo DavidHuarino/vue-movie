@@ -36,9 +36,20 @@ const getReleasedYear = computed(() => {
 </script>
 <template>
   <div class="flex justify-between">
-    <h2>Popular TV shows</h2>
+    <div class="flex space-x-2">
+      <div class="w-1 bg-red-600"></div>
+      <h2 class="text-xl capitalize">Popular Tv Shows</h2>
+    </div>
+    <!-- <h2>Popular TV shows</h2> -->
+    <!-- <div class="flex space-x-2">
+      <div class="w-1 bg-red-600"></div>
+      <h2 class="text-xl capitalize">Películas populares</h2>
+    </div -->
     <div class="flex justify-between">
-      <span><a href="#">Ver todo</a></span>
+      <!-- <span><a href="#">Ver todo</a></span> -->
+      <span
+        ><router-link :to="{ name: 'TvSerie' }"> Ver todo </router-link></span
+      >
       <button @click="swiper_tv.slidePrev()">Prev</button>
       <button @click="swiper_tv.slideNext()">Next</button>
     </div>

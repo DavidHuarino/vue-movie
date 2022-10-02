@@ -1,6 +1,6 @@
 <script setup></script>
 <template>
-  <footer class="flex justify-between bg-gray-700 h-16 items-center px-4">
+  <footer class="flex justify-between bg-home-main h-16 items-center px-4">
     <span class="text-white"
       >© 2022 VueMovieHD Todos los derechos reservados.</span
     >
